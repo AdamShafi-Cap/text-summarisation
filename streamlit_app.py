@@ -63,7 +63,7 @@ Once the competitor could rise no higher, the spire of the Chrysler building was
 '''
 
 def load_models():   
-    qa = SentenceTransformer('multi-qa-mpnet-base-dot-v1')
+    qa = SentenceTransformer('sentence-transformers/multi-qa-mpnet-base-dot-v1')
     summ = Summarizer('distilbert-base-uncased', hidden=[-1,-2], hidden_concat=True)
     return qa, summ
 
