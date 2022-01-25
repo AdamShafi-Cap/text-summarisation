@@ -104,13 +104,13 @@ qa, summ = load_models()
 paragraphs, paragraphs_embedded = load_data()
 
 q = st.text_input('What is your query?')
-    if q:
-        ans = ask(q, X=paragraphs_embedded, s=paragraphs, n=3, model=qa)
-        for i,t in ans.values:
-            with st.beta_expander(f'PAGE {i}'):
-                if len(t)>45:
-                    summary = summarize(t, summ, 1)
-                    st.success(summary)
-                    st.write(bold_sentences(t,summary))
-                else:
-                    st.write(t)
+if q:
+    ans = ask(q, X=paragraphs_embedded, s=paragraphs, n=3, model=qa)
+    for i,t in ans.values:
+        with st.beta_expander(f'PAGE {i}'):
+            if len(t)>45:
+                summary = summarize(t, summ, 1)
+                st.success(summary)
+                st.write(bold_sentences(t,summary))
+            else:
+                st.write(t)
