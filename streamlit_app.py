@@ -67,4 +67,4 @@ a = SentenceTransformer('stsb-distilbert-base')
 summ = Summarizer(custom_model = a)
 
 
-st.write(summ(body))
+st.write(summ(sample_phrase))
