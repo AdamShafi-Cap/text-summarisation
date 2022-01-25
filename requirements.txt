@@ -1,8 +1,8 @@
-bert-extractive-summarizer==0.7.0
+bert-extractive-summarizer
 pdfminer==20191125
 preshed==3.0.5
-streamlit==0.77.0
-sentence-transformers==0.4.1.2
+streamlit
+sentence-transformers
 stqdm==0.0.3
 --find-links https://download.pytorch.org/whl/torch_stable.html
 torch==1.8.0+cpu

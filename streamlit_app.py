@@ -62,38 +62,55 @@ Walter Chrysler had set out to build the tallest building in the world, a compet
 Once the competitor could rise no higher, the spire of the Chrysler building was raised into view, giving it the title.
 '''
 
+@st.cache()
 def load_models():   
     qa = SentenceTransformer('sentence-transformers/multi-qa-distilbert-dot-v1')
     summ = Summarizer('distilbert-base-uncased', hidden=[-1,-2], hidden_concat=True)
     return qa, summ
 
-qa, summ = load_models()
-
-st.write(summ(sample_phrase))
+@st.cache()
+def load_data():
+    paragraphs = pd.read_csv('paragraphs.csv')
+    paragraphs_embedded = pd.read_csv('paragraphs_embedded.csv')
+    return paragraphs, paragraphs_embedded
 
 @st.cache()
-def load_pdf(file,n=0)->str:
+def ask(q:str, X:pd.DataFrame, s:pd.DataFrame, n: int, model)->pd.Series:
     
-    if isinstance(file, str):
-        fp = open(file, 'rb')
-    else: 
-        fp = file
+    embedding = np.array(model.encode([q])[0])
         
-    rsrcmgr = PDFResourceManager()
-    retstr = io.StringIO()
-    laparams = LAParams()
-    device = TextConverter(rsrcmgr, retstr, laparams=laparams)
+    sorted_index = (X
+                    .apply(lambda row: np.dot(row, embedding), axis=1)
+                    .abs()
+                    .sort_values(ascending=False)
+                   )
     
-    # Create a PDF interpreter object.
-    interpreter = PDFPageInterpreter(rsrcmgr, device)
-    
-    # Process each page contained in the document.
-    for i, page in enumerate(PDFPage.get_pages(fp)):
-        if i+1 > n:
-            interpreter.process_page(page)
-    text = retstr.getvalue()
-    return text
+    return s.loc[sorted_index.index].head(n)
 
-text = load_pdf('pip_guide_1.pdf')
+@st.cache()
+def summarize(text, summarizer_model, n=1):
+    result = summarizer_model(text, num_sentences=n,min_length=0)
+    return result
 
-st.write(text)
+def bold_sentences(text,summary):
+    handler =  sentence_handler.SentenceHandler()
+    bold = " ".join([f"__**{sentence}**__" 
+                    if summary.find(sentence) != -1
+                    else sentence 
+                    for sentence in handler.process(text,min_length = 0)])
+    return bold
+
+qa, summ = load_models()
+paragraphs, paragraphs_embedded = load_data()
+
+q = st.text_input('What is your query?')
+    if q:
+        ans = ask(q, X=paragraphs_embedded, s=paragraphs, n=3, model=qa)
+        for i,t in ans.values:
+            with st.beta_expander(f'PAGE {i}'):
+                if len(t)>45:
+                    summary = summarize(t, summ, 1)
+                    st.success(summary)
+                    st.write(bold_sentences(t,summary))
+                else:
+                    st.write(t)
