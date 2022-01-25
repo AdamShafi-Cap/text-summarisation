@@ -62,11 +62,15 @@ Walter Chrysler had set out to build the tallest building in the world, a compet
 Once the competitor could rise no higher, the spire of the Chrysler building was raised into view, giving it the title.
 '''
 
-@st.cache()
-def load_models():   
+@st.cache(hash_funcs={preshed.maps.PreshMap:id,cymem.cymem.Pool:id})
+def load_qa_model():   
     qa = SentenceTransformer('sentence-transformers/multi-qa-distilbert-dot-v1')
+    return qa
+
+@st.cache(hash_funcs={preshed.maps.PreshMap:id,cymem.cymem.Pool:id})
+def load_summariser_model():   
     summ = Summarizer('distilbert-base-uncased', hidden=[-1,-2], hidden_concat=True)
-    return qa, summ
+    return summ
 
 @st.cache()
 def load_data():
@@ -100,7 +104,8 @@ def bold_sentences(text,summary):
                     for sentence in handler.process(text,min_length = 0)])
     return bold
 
-qa, summ = load_models()
+qa = load_qa_model()
+summ = load_summariser_model()
 paragraphs, paragraphs_embedded = load_data()
 
 q = st.text_input('What is your query?')
