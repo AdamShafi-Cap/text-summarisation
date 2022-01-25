@@ -61,10 +61,11 @@ The Chrysler Building was the headquarters of the American automaker until 1953,
 Walter Chrysler had set out to build the tallest building in the world, a competition at that time with another Manhattan skyscraper under construction at 40 Wall Street at the south end of Manhattan. He kept secret the plans for the spire that would grace the top of the building, building it inside the structure and out of view of the public until 40 Wall Street was complete.
 Once the competitor could rise no higher, the spire of the Chrysler building was raised into view, giving it the title.
 '''
+@st.cache(allow_output_mutation=True)
+def load_models():   
+    qa = SentenceTransformer('multi-qa-mpnet-base-dot-v1')
+    summ = Summarizer('distilbert-base-uncased', hidden=[-1,-2], hidden_concat=True)
 
-a = SentenceTransformer('stsb-distilbert-base')
-
-summ = Summarizer('distilbert-base-uncased', hidden=[-1,-2], hidden_concat=True)
-
+qa, summ = load_models()
 
 st.write(summ(sample_phrase))
