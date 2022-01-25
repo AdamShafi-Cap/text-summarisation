@@ -61,12 +61,37 @@ The Chrysler Building was the headquarters of the American automaker until 1953,
 Walter Chrysler had set out to build the tallest building in the world, a competition at that time with another Manhattan skyscraper under construction at 40 Wall Street at the south end of Manhattan. He kept secret the plans for the spire that would grace the top of the building, building it inside the structure and out of view of the public until 40 Wall Street was complete.
 Once the competitor could rise no higher, the spire of the Chrysler building was raised into view, giving it the title.
 '''
-@st.cache()
+
 def load_models():   
     qa = SentenceTransformer('multi-qa-mpnet-base-dot-v1')
-    #summ = Summarizer('distilbert-base-uncased', hidden=[-1,-2], hidden_concat=True)
-    return qa
+    summ = Summarizer('distilbert-base-uncased', hidden=[-1,-2], hidden_concat=True)
+    return qa, summ
 
-qa = load_models()
+qa, summ = load_models(): 
 
 st.write(summ(sample_phrase))
+
+@st.cache()
+def load_pdf(file,n=0)->str:
+    
+    if isinstance(file, str):
+        fp = open(file, 'rb')
+    else: 
+        fp = file
+        
+    rsrcmgr = PDFResourceManager()
+    retstr = io.StringIO()
+    laparams = LAParams()
+    device = TextConverter(rsrcmgr, retstr, laparams=laparams)
+    
+    # Create a PDF interpreter object.
+    interpreter = PDFPageInterpreter(rsrcmgr, device)
+    
+    # Process each page contained in the document.
+    for i, page in enumerate(PDFPage.get_pages(fp)):
+        if i+1 > n:
+            interpreter.process_page(page)
+    text = retstr.getvalue()
+    return text
+
+load_pdf('pip_guide_1.pdf')
