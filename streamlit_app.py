@@ -67,7 +67,7 @@ def load_models():
     summ = Summarizer('distilbert-base-uncased', hidden=[-1,-2], hidden_concat=True)
     return qa, summ
 
-qa, summ = load_models(): 
+qa, summ = load_models()
 
 st.write(summ(sample_phrase))
 
@@ -94,4 +94,6 @@ def load_pdf(file,n=0)->str:
     text = retstr.getvalue()
     return text
 
-load_pdf('pip_guide_1.pdf')
+text = load_pdf('pip_guide_1.pdf')
+
+st.write(text)
