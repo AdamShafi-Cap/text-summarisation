@@ -64,7 +64,7 @@ Once the competitor could rise no higher, the spire of the Chrysler building was
 
 a = SentenceTransformer('stsb-distilbert-base')
 
-summ = Summarizer('stsb-distilbert-base')
+summ = Summarizer('distilbert-base-uncased', hidden=[-1,-2], hidden_concat=True)
 
 
 st.write(summ(sample_phrase))
