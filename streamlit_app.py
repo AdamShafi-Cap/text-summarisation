@@ -70,13 +70,11 @@ def load_summariser_model():
     summ = Summarizer('distilbert-base-uncased', hidden=[-1,-2], hidden_concat=True)
     return summ
 
-@st.cache()
 def load_data():
     paragraphs = pd.read_csv('paragraphs.csv')
     paragraphs_embedded = pd.read_csv('paragraphs_embedded.csv')
     return paragraphs, paragraphs_embedded
 
-@st.cache()
 def ask(q:str, X:pd.DataFrame, s:pd.DataFrame, n: int, model)->pd.Series:
     
     embedding = np.array(model.encode([q])[0])
@@ -89,7 +87,6 @@ def ask(q:str, X:pd.DataFrame, s:pd.DataFrame, n: int, model)->pd.Series:
     
     return s.loc[sorted_index.index].head(n)
 
-@st.cache()
 def summarize(text, summarizer_model, n=1):
     result = summarizer_model(text, num_sentences=n,min_length=0)
     return result
