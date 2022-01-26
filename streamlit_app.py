@@ -40,7 +40,7 @@ def load_qa_model():
         pickle.dump(qa, open('./dbert.pkl', 'wb'))
     return qa
 
-@st.cache()
+@st.cache(allow_output_mutation=True, hash_funcs={preshed.maps.PreshMap:id, cymem.cymem.Pool:id})
 def load_summariser_model():   
     summ = Summarizer('distilbert-base-uncased', hidden=[-1,-2], hidden_concat=True)
     return summ
