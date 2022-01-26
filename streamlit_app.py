@@ -48,6 +48,8 @@ def load_summariser_model():
 @st.cache()
 def load_data():
     paragraphs = pd.read_csv('paragraphs_clean.csv')
+    paragraphs['text'] = paragraphs['text'].str.replace('\n','  \n  ')
+
     paragraphs_embedded = pd.read_csv('paragraphs_embedded.csv')
     return paragraphs, paragraphs_embedded
 
