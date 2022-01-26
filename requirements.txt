@@ -1,6 +1,6 @@
 bert-extractive-summarizer==0.7.0
 preshed==3.0.5
-streamlit==0.77.0
+streamlit
 sentence-transformers==0.4.1.2
 --find-links https://download.pytorch.org/whl/torch_stable.html
 torch==1.8.0+cpu
