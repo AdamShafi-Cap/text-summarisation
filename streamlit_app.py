@@ -26,10 +26,10 @@ os.environ["TOKENIZERS_PARALLELISM"] = "false"
 st.set_page_config(layout="wide")
 file, text, q, embeddings_option, num_pages = None, None, None, None, None
 
-st.title('Title')
-st.header('Header')
+st.title('Search Guidance')
+st.header('PIP Assessment Guide Part 2: The Asessment Criteria ')
 st.write('''
-Text''')
+This tool leverages advanced NLP techniques to search and summarise guidance documents. Enter your query below to see the most relevant sections of the document. Longer sections will be summarised. ''')
 
 @st.cache(allow_output_mutation=True)
 def load_qa_model():   
@@ -47,7 +47,7 @@ def load_summariser_model():
 
 @st.cache()
 def load_data():
-    paragraphs = pd.read_csv('paragraphs.csv')
+    paragraphs = pd.read_csv('paragraphs_clean.csv')
     paragraphs_embedded = pd.read_csv('paragraphs_embedded.csv')
     return paragraphs, paragraphs_embedded
 
@@ -80,15 +80,14 @@ def bold_sentences(text,summary):
 paragraphs, paragraphs_embedded = load_data()
 
 qa = load_qa_model()
+summ = load_summariser_model()
 
 q = st.text_input('What is your query?')
 if q:
-    
-    summ = load_summariser_model()
     ans = ask(q, X=paragraphs_embedded, s=paragraphs, n=3, model=qa)
     for i,t in ans.values:
         with st.beta_expander(f'Section: {i}'):
-            if len(t)>45:
+            if len(t)>60:
                 summary = summarize(t, summ, 1)
                 st.success(summary)
                 st.write(bold_sentences(t,summary))
