@@ -11,6 +11,7 @@ import cymem
 # PDF
 import sys
 import io
+import os
 
 # Summarization using extractive bert
 from summarizer import Summarizer, sentence_handler
