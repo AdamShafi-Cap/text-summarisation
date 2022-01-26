@@ -31,7 +31,7 @@ st.header('Header')
 st.write('''
 Text''')
 
-@st.cache()
+@st.cache(allow_output_mutation=True)
 def load_qa_model():   
     try:
         qa = pickle.load(open('./dbert.pkl', 'rb'))
@@ -40,6 +40,7 @@ def load_qa_model():
         pickle.dump(qa, open('./dbert.pkl', 'wb'))
     return qa
 
+@st.cache()
 def load_summariser_model():   
     summ = Summarizer('distilbert-base-uncased', hidden=[-1,-2], hidden_concat=True)
     return summ
