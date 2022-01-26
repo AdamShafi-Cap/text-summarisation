@@ -99,6 +99,7 @@ def bold_sentences(text,summary):
                     for sentence in handler.process(text,min_length = 0)])
     return bold
 
+TOKENIZERS_PARALLELISM = False
 
 paragraphs, paragraphs_embedded = load_data()
 
