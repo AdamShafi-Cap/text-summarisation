@@ -31,19 +31,22 @@ st.header('Header')
 st.write('''
 Text''')
 
-
+@st.cache()
 def load_qa_model():   
     qa = SentenceTransformer('sentence-transformers/multi-qa-distilbert-dot-v1')
+    st.success('Q&A Model Loaded')
     return qa
 
 def load_summariser_model():   
     summ = Summarizer('distilbert-base-uncased', hidden=[-1,-2], hidden_concat=True)
+    st.success('Summarizer Loaded')
     return summ
 
 @st.cache()
 def load_data():
     paragraphs = pd.read_csv('paragraphs.csv')
     paragraphs_embedded = pd.read_csv('paragraphs_embedded.csv')
+    st.success('Data Loaded')
     return paragraphs, paragraphs_embedded
 
 def ask(q:str, X:pd.DataFrame, s:pd.DataFrame, n: int, model)->pd.Series:
@@ -74,9 +77,11 @@ def bold_sentences(text,summary):
 
 paragraphs, paragraphs_embedded = load_data()
 
+qa = load_qa_model()
+
 q = st.text_input('What is your query?')
 if q:
-    qa = load_qa_model()
+    
     summ = load_summariser_model()
     ans = ask(q, X=paragraphs_embedded, s=paragraphs, n=3, model=qa)
     for i,t in ans.values:
