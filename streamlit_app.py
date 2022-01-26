@@ -85,11 +85,11 @@ while (user_input == st.secrets["secret"]):
     qa = load_qa_model()
     summ = load_summariser_model()
 
-    q = st.text_input('What is your query?', 'What is this document?', key= random.sample(range(1001,9999), 1))
+    q = st.text_input('What is your query?', 'What is this document?', key=1001)
     if q:
         ans = ask(q, X=paragraphs_embedded, s=paragraphs, n=3, model=qa)
         for i,t in ans.values:
-            with st.expander(f'Section: {i}'):
+            with st.expander(f'Section: {i}', expanded=True):
                 if len(t)>60:
                     summary = summarize(t, summ, 1)
                     st.success(summary)
@@ -97,3 +97,4 @@ while (user_input == st.secrets["secret"]):
                     st.write(t)
                 else:
                     st.write(t)
+    break
