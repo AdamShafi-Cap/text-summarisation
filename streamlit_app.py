@@ -92,6 +92,7 @@ if q:
             if len(t)>60:
                 summary = summarize(t, summ, 1)
                 st.success(summary)
-                st.write(bold_sentences(t,summary))
+                #st.write(bold_sentences(t,summary))
+                st.write(t)
             else:
                 st.write(t)
