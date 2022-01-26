@@ -77,22 +77,22 @@ def bold_sentences(text,summary):
                     for sentence in handler.process(text,min_length = 0)])
     return bold
 
+user_input = st.text_input("Enter Password", key = 222)
+while (user_input == st.secrets["secret"]):
+    paragraphs, paragraphs_embedded = load_data()
 
+    qa = load_qa_model()
+    summ = load_summariser_model()
 
-paragraphs, paragraphs_embedded = load_data()
-
-qa = load_qa_model()
-summ = load_summariser_model()
-
-q = st.text_input('What is your query?')
-if q:
-    ans = ask(q, X=paragraphs_embedded, s=paragraphs, n=3, model=qa)
-    for i,t in ans.values:
-        with st.beta_expander(f'Section: {i}'):
-            if len(t)>60:
-                summary = summarize(t, summ, 1)
-                st.success(summary)
-                #st.write(bold_sentences(t,summary))
-                st.write(t)
-            else:
-                st.write(t)
+    q = st.text_input('What is your query?')
+    if q:
+        ans = ask(q, X=paragraphs_embedded, s=paragraphs, n=3, model=qa)
+        for i,t in ans.values:
+            with st.beta_expander(f'Section: {i}'):
+                if len(t)>60:
+                    summary = summarize(t, summ, 1)
+                    st.success(summary)
+                    #st.write(bold_sentences(t,summary))
+                    st.write(t)
+                else:
+                    st.write(t)
