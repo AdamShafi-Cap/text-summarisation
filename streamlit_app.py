@@ -33,20 +33,21 @@ Text''')
 
 @st.cache()
 def load_qa_model():   
-    qa = SentenceTransformer('sentence-transformers/multi-qa-distilbert-dot-v1')
-    st.success('Q&A Model Loaded')
+    try:
+        qa = pickle.load(open('./dbert.pkl', 'rb'))
+    except:
+        qa = SentenceTransformer('sentence-transformers/multi-qa-distilbert-dot-v1')
+        pickle.dump(qa, open('./dbert.pkl', 'wb'))
     return qa
 
 def load_summariser_model():   
     summ = Summarizer('distilbert-base-uncased', hidden=[-1,-2], hidden_concat=True)
-    st.success('Summarizer Loaded')
     return summ
 
 @st.cache()
 def load_data():
     paragraphs = pd.read_csv('paragraphs.csv')
     paragraphs_embedded = pd.read_csv('paragraphs_embedded.csv')
-    st.success('Data Loaded')
     return paragraphs, paragraphs_embedded
 
 def ask(q:str, X:pd.DataFrame, s:pd.DataFrame, n: int, model)->pd.Series:
