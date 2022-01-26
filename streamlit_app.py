@@ -85,7 +85,7 @@ while (user_input == st.secrets["secret"]):
     qa = load_qa_model()
     summ = load_summariser_model()
 
-    q = st.text_input('What is your query?', 'What is this document?', key= random.sample(range(1001,9999)))
+    q = st.text_input('What is your query?', 'What is this document?', key= random.sample(range(1001,9999), 1))
     if q:
         ans = ask(q, X=paragraphs_embedded, s=paragraphs, n=3, model=qa)
         for i,t in ans.values:
