@@ -18,7 +18,7 @@ from summarizer import Summarizer, sentence_handler
 # BERT based models for document search
 from sentence_transformers import SentenceTransformer
 
-TOKENIZERS_PARALLELISM = False
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 ### App Set Up ###
 
