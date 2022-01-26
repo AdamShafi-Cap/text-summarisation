@@ -12,6 +12,7 @@ import cymem
 import sys
 import io
 import os
+import random
 
 # Summarization using extractive bert
 from summarizer import Summarizer, sentence_handler
@@ -77,14 +78,14 @@ def bold_sentences(text,summary):
                     for sentence in handler.process(text,min_length = 0)])
     return bold
 
-user_input = st.text_input("Enter Password", key=222)
+user_input = st.text_input("Enter Password", key=1000)
 while (user_input == st.secrets["secret"]):
     paragraphs, paragraphs_embedded = load_data()
 
     qa = load_qa_model()
     summ = load_summariser_model()
 
-    q = st.text_input('What is your query?', key=111)
+    q = st.text_input('What is your query?', 'What is this document?', key= random.sample(range(1001,9999)))
     if q:
         ans = ask(q, X=paragraphs_embedded, s=paragraphs, n=3, model=qa)
         for i,t in ans.values:
