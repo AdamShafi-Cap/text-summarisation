@@ -84,11 +84,11 @@ while (user_input == st.secrets["secret"]):
     qa = load_qa_model()
     summ = load_summariser_model()
 
-    q = st.text_input('What is your query?', key=222)
+    q = st.text_input('What is your query?', key=111)
     if q:
         ans = ask(q, X=paragraphs_embedded, s=paragraphs, n=3, model=qa)
         for i,t in ans.values:
-            with st.beta_expander(f'Section: {i}'):
+            with st.expander(f'Section: {i}'):
                 if len(t)>60:
                     summary = summarize(t, summ, 1)
                     st.success(summary)
