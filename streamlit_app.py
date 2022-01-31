@@ -28,7 +28,7 @@ st.set_page_config(layout="wide")
 file, text, q, embeddings_option, num_pages = None, None, None, None, None
 
 st.title('Search Guidance')
-st.header('PIP Assessment Guide Part 2: The Asessment Criteria ')
+st.header('PIP Assessment Guide Part 2: The Assessment Criteria ')
 st.write('''
 This tool leverages advanced NLP techniques to search and summarise guidance documents. Enter your query below to see the most relevant sections of the document. Longer sections will be summarised. ''')
 
@@ -77,8 +77,8 @@ def bold_sentences(text,summary):
                     else sentence 
                     for sentence in handler.process(text,min_length = 0)])
     return bold
-
-user_input = st.text_input("Enter Password", key=1000)
+with st.expander('Credentials', expanded=False):
+    user_input = st.text_input("Enter Password", key=1000)
 while (user_input == st.secrets["secret"]):
     paragraphs, paragraphs_embedded = load_data()
 
