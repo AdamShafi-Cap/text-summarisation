@@ -90,7 +90,7 @@ while (user_input == st.secrets["secret"]):
         ans = ask(q, X=paragraphs_embedded, s=paragraphs, n=3, model=qa)
         for i,t in ans.values:
             with st.expander(f'Section: {i}', expanded=True):
-                if len(t)>150 and len(t.split('.')>1:
+                if len(t)>150 and len(t.split('.'))>1:
                     summary = summarize(t, summ, 1)
                     st.success(summary)
                     #st.write(bold_sentences(t,summary))
