@@ -92,7 +92,7 @@ while (user_input == st.secrets["secret"]):
             with st.expander(f'Section: {i}', expanded=True):
                 if len(t)>150 and len(t.split('.'))>2:
                     summary = summarize(t, summ, 1)
-                    st.success(summary)
+                    st.success(summary.replace('• ',''))
                     #st.write(bold_sentences(t,summary))
                     st.write(t)
                 else:
